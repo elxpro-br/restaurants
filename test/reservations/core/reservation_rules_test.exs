@@ -68,4 +68,12 @@ defmodule Reservations.Core.ReservationRulesTest do
              |> make_reservation({"Gus", 3})
              |> make_reservation({"Ana", 4})
   end
+
+  test "should throw an error message when the reservation has already exist" do
+    assert {:error, "This Reservation already exist"} ==
+             "BK"
+             |> create_restaurant(2)
+             |> make_reservation({"Gus", 3})
+             |> make_reservation({"Gus", 4})
+  end
 end
