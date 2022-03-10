@@ -35,4 +35,9 @@ defmodule ReservationsTest do
              |> make_reservation({"Gus", 3})
              |> delete_reservation("Gus")
   end
+
+  test "check reservation" do
+    expected = "BK" |> create_restaurant(10) |> reserved_places()
+    assert expected == "There are: 0 reservations and: 10 available tables"
+  end
 end
