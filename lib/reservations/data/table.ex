@@ -1,4 +1,7 @@
 defmodule Reservations.Data.Table do
+  alias Reservations.Type
+
+  @type t :: Type.table()
   defstruct food_plate: 0, forks: nil, knives: nil, name: nil, seats: nil, spoons: nil
 
   def new(name, seats) do
