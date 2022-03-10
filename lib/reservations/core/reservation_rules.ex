@@ -56,6 +56,7 @@ defmodule Reservations.Core.ReservationRules do
   defp create_reservation({:error, message}, _), do: {:error, message}
 
   # Delete Reservation
+  @spec delete_reservation(restaurant(), String.t()) :: restaurant() | {:error, String.t()}
   def delete_reservation(%Restaurant{tables: tables} = restaurant, name) do
     tables
     |> Enum.find(&(&1.name == name))
@@ -71,5 +72,14 @@ defmodule Reservations.Core.ReservationRules do
         reserved_tables: restaurant.reserved_tables - 1,
         num_tables: restaurant.num_tables + 1
     }
+  end
+
+  ## Check Reservations
+
+  @spec reserved_places(restaurant()) :: String.t()
+  def reserved_places(restaurant) do
+    reserved_tables = restaurant.reserved_tables
+    available_tables = restaurant.num_tables
+    "There are: #{reserved_tables} reservations and: #{available_tables} available tables"
   end
 end
