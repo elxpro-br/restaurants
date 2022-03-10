@@ -3,10 +3,13 @@ defmodule Reservations.Core.ReservationRules do
   alias Reservations.Data.Table
   @type restaurant :: Restaurant.t()
 
+  ## Create Reservation
   @spec create_restaurant(String.t(), integer()) :: restaurant()
   def create_restaurant(name, num_tables) do
     Restaurant.new(name, num_tables)
   end
+
+  ##  Make Resrvation
 
   @spec make_reservation(restaurant(), {String.t(), integer()}) ::
           restaurant() | {:error, String.t()}
@@ -51,4 +54,22 @@ defmodule Reservations.Core.ReservationRules do
   end
 
   defp create_reservation({:error, message}, _), do: {:error, message}
+
+  # Delete Reservation
+  def delete_reservation(%Restaurant{tables: tables} = restaurant, name) do
+    tables
+    |> Enum.find(&(&1.name == name))
+    |> then(&confirm_delete(&1, restaurant))
+  end
+
+  defp confirm_delete(nil, _restaurant), do: {:error, "There is no reservation to this person"}
+
+  defp confirm_delete(table, restaurant) do
+    %Restaurant{
+      restaurant
+      | tables: restaurant.tables -- [table],
+        reserved_tables: restaurant.reserved_tables - 1,
+        num_tables: restaurant.num_tables + 1
+    }
+  end
 end

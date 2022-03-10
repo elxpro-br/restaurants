@@ -76,4 +76,25 @@ defmodule Reservations.Core.ReservationRulesTest do
              |> make_reservation({"Gus", 3})
              |> make_reservation({"Gus", 4})
   end
+
+  test "should delete a reservation" do
+    assert %Restaurant{
+             name: "BK",
+             num_tables: 10,
+             reserved_tables: 0,
+             tables: []
+           } ==
+             "BK"
+             |> create_restaurant(10)
+             |> make_reservation({"Gus", 3})
+             |> delete_reservation("Gus")
+  end
+
+  test "should delete a reservation for an user that does not exist" do
+    assert {:error, "There is no reservation to this person"} ==
+             "BK"
+             |> create_restaurant(10)
+             |> make_reservation({"Gus", 3})
+             |> delete_reservation("abc123")
+  end
 end
